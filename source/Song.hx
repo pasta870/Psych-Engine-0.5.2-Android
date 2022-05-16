@@ -5,7 +5,7 @@ import haxe.Json;
 import haxe.format.JsonParser;
 import lime.utils.Assets;
 
-#if MODS_ALLOWED
+#if sys
 import sys.io.File;
 import sys.FileSystem;
 #end
@@ -26,10 +26,17 @@ typedef SwagSong =
 	var player3:String; //deprecated, now replaced by gfVersion
 	var gfVersion:String;
 	var stage:String;
+	var healthdrainKill:Bool;
 
 	var arrowSkin:String;
 	var splashSkin:String;
 	var validScore:Bool;
+	var characterTrails:Bool;
+	var cameraMoveOnNotes:Bool;
+	var healthdrain:Float;
+	var songInstVolume:Float;
+	var disableAntiMash:Bool;
+	var disableDebugButtons:Bool;
 }
 
 class Song
@@ -39,15 +46,22 @@ class Song
 	public var events:Array<Dynamic>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
+	public var cameraMoveOnNotes:Bool = false;
 	public var arrowSkin:String;
 	public var splashSkin:String;
 	public var speed:Float = 1;
+	public var healthdrain:Float = 0;
 	public var stage:String;
+	public var healthdrainKill:Bool = false;
+	public var characterTrails:Bool = false;
+	public var disableAntiMash:Bool = false;
+	public var disableDebugButtons:Bool = false;
 
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
 	public var player3:String = 'gf'; //deprecated
 	public var gfVersion:String = 'gf';
+	public var songInstVolume:Float = 1;
 
 	private static function onLoadJson(songJson:SwagSong) // Convert old charts to newest format
 	{
@@ -103,8 +117,8 @@ class Song
 		#end
 
 		if(rawJson == null) {
-			#if MODS_ALLOWED
-			rawJson = File.getContent(SUtil.getPath() + Paths.json(formattedFolder + '/' + formattedSong)).trim();
+			#if sys
+			rawJson = File.getContent(Paths.json(formattedFolder + '/' + formattedSong)).trim();
 			#else
 			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong)).trim();
 			#end

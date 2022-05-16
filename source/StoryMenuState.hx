@@ -1,3 +1,4 @@
+
 package;
 
 #if desktop
@@ -59,7 +60,7 @@ class StoryMenuState extends MusicBeatState
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 		persistentUpdate = persistentDraw = true;
 
-		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
+		scoreText = new FlxText(500, 10, 0, "SCORE: 49324858", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
@@ -81,7 +82,7 @@ class StoryMenuState extends MusicBeatState
 		add(grpWeekText);
 
 		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
-		add(blackBarThingie);
+		add(blackBarThingie); 
 
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
 
@@ -185,11 +186,6 @@ class StoryMenuState extends MusicBeatState
 		changeWeek();
 		changeDifficulty();
 
-		#if android
-		addVirtualPad(FULL, A_B_X_Y);
-		addPadCamera();
-		#end
-
 		super.create();
 	}
 
@@ -242,19 +238,13 @@ class StoryMenuState extends MusicBeatState
 			else if (upP || downP)
 				changeDifficulty();
 
-			if(FlxG.keys.justPressed.CONTROL #if android || _virtualpad.buttonX.justPressed #end)
+			if(FlxG.keys.justPressed.CONTROL)
 			{
-				#if android
-				removeVirtualPad();
-				#end
 				persistentUpdate = false;
 				openSubState(new GameplayChangersSubstate());
 			}
-			else if(controls.RESET #if android || _virtualpad.buttonY.justPressed #end)
+			else if(controls.RESET)
 			{
-				#if android
-				removeVirtualPad();
-				#end
 				persistentUpdate = false;
 				openSubState(new ResetScoreSubState('', curDifficulty, '', curWeek));
 				//FlxG.sound.play(Paths.sound('scrollMenu'));

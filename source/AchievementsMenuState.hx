@@ -6,6 +6,7 @@ import Discord.DiscordClient;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.tweens.FlxEase;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
@@ -31,6 +32,9 @@ class AchievementsMenuState extends MusicBeatState
 		#if desktop
 		DiscordClient.changePresence("Achievements Menu", null);
 		#end
+
+		camera.zoom = 2.2;
+		CoolUtil.cameraZoom(camera, 1, .5, FlxEase.sineOut, ONESHOT);
 
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -72,10 +76,6 @@ class AchievementsMenuState extends MusicBeatState
 		add(descText);
 		changeSelection();
 
-		#if android
-		addVirtualPad(UP_DOWN, B);
-		#end
-
 		super.create();
 	}
 
@@ -92,6 +92,7 @@ class AchievementsMenuState extends MusicBeatState
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
+			CoolUtil.cameraZoom(camera, 2, .5, FlxEase.backOut, ONESHOT);
 		}
 	}
 

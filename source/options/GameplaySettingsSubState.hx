@@ -24,9 +24,6 @@ import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import Controls;
-#if android
-import android.Hardware;
-#end
 
 using StringTools;
 
@@ -41,7 +38,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'Check this if you want to play with\na controller instead of using your Keyboard.',
 			'controllerMode',
 			'bool',
-			#if android true #else false #end);
+			false);
 		addOption(option);
 
 		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
@@ -59,12 +56,35 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			false);
 		addOption(option);
 
+		var option:Option = new Option('Hide Middlescroll Opponent Notes',
+			'If checked, hides opponent arrows when playing with middlescroll',
+			'hideMidScrollOpArrows',
+			'bool',
+			false);
+		addOption(option);
+
 		var option:Option = new Option('Ghost Tapping',
 			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 			'ghostTapping',
 			'bool',
 			true);
 		addOption(option);
+
+		var option:Option = new Option('Remove Perfect! Note Judgement',
+			'If checked, removes Perfect! judgement',
+			'removePerfects',
+			'bool',
+			false);
+		addOption(option);
+
+		/*
+		var option:Option = new Option('Note Camera Movement',
+			'If checked, camera will move when pressing notes',
+			'cameramoveonnotes',
+			'bool',					should fix this someday.
+			true);
+		addOption(option);
+		*/
 
 		var option:Option = new Option('Disable Reset Button',
 			"If checked, pressing Reset won't do anything.",
@@ -85,6 +105,43 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		option.decimals = 1;
 
+		var option:Option = new Option('Hold Notes Visibility',
+			'These lines after hold notes will be shown with selecter visibility',
+			'holdNoteVisibility',
+			'percent',
+			1);
+		addOption(option);
+		option.scrollSpeed = 1;
+		option.minValue = 0.0;
+		option.changeValue = 0.1;
+		option.maxValue = 1;
+		option.decimals = 1;
+
+		var option:Option = new Option('Opponent Lane Underlay Visibility',
+			'Sets visibility of opponent\'s lane underlay.',
+			'opponentUnderlaneVisibility',
+			'percent',
+			0);
+		addOption(option);	
+		option.scrollSpeed = 1;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+
+		var option:Option = new Option('Lane Underlay Visibility',
+			'Sets visibility of lane underlay.',
+			'underlaneVisibility',
+			'percent',
+			0);
+		addOption(option);	
+		option.scrollSpeed = 1;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		
+
 		var option:Option = new Option('Rating Offset',
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
 			'ratingOffset',
@@ -94,6 +151,17 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.scrollSpeed = 20;
 		option.minValue = -30;
 		option.maxValue = 30;
+		addOption(option);
+
+		var option:Option = new Option('Perfect! Hit Window',
+			'Changes the amount of time you have\nfor hitting a "Perfect!" in milliseconds.',
+			'perfectWindow',
+			'int',
+			10);
+		option.displayFormat = '%vms';
+		option.scrollSpeed = 15;
+		option.minValue = 1;
+		option.maxValue = 10;
 		addOption(option);
 
 		var option:Option = new Option('Sick! Hit Window',
@@ -140,26 +208,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
-		#if android
-		var option:Option = new Option('GameOver Vibration',
-			'If unchecked, will make the game to vibrate when you die.',
-			'vibration',
-			'bool',
-			false);
-		addOption(option);
-		option.onChange = onChangeGameOverVibration;
-		#end
-
 		super();
 	}
-
-	#if android
-	function onChangeGameOverVibration()
-	{
-		if(ClientPrefs.vibration)
-		{
-			Hardware.vibrate(500);
-		}
-	}
-	#end
 }

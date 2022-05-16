@@ -1,5 +1,10 @@
-# Friday Night Funkin' - Psych Engine Android Support
-Engine originally used on [Mind Games Mod](https://gamebanana.com/mods/301107), intended to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to be an easier alternative to newbie coders.
+# Friday Night Funkin' - OS Engine - Modded Psych Engine
+
+## IMPORTANT NOTE:
+
+I need help with making good wikis. So if you can, ping me in [my discord server](https://discord.gg/5vEHTRjNck) if you wanna help me.
+
+!!Add mods by folders (mods/my-mod/) instead of just (mods/)!!! Or it'll break engine
 
 ## Installation:
 You must have [the most up-to-date version of Haxe](https://haxe.org/download/), seriously, stop using 4.1.5, it misses some stuff.
@@ -10,50 +15,20 @@ To install LuaJIT do this: `haxelib git linc_luajit https://github.com/AndreiRud
 
 ...Or if you don't want your mod to be able to run .lua scripts, delete the "LUA_ALLOWED" line on Project.xml
 
-# Build instructions For Android
+## OS Engine Credits:
+* [weuz_](https://github.com/weuz-github) - Coding
+* [nelifs](https://github.com/nelifs) - Coding and Design
+* [Cooljer](https://github.com/cooljer) - Arts
 
-1. Download
-* <a href = "https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html"> JDK </a>
-* <a href = "https://developer.android.com/studio"> Android Studio </a>
-* <a href = "https://developer.android.com/ndk/downloads/older_releases?hl=fi"> NDK </a> - download the r15c
+### Special Thanks
+* [jonnycat](https://github.com/McJonnycat) - Fixing bugs in Engine <3.
 
-2. Install JDK, Android Studio 
-Unzip ndk (ndk does not need to be installed)
-
-3. We need to set up Android Studio for this go to android studio and find android sdk (in settings -> Appearance & Behavior -> system settings -> android sdk)
-![andr](https://user-images.githubusercontent.com/59097731/104179652-44346000-541d-11eb-8ad1-1e4dfae304a8.PNG)
-![andr2](https://user-images.githubusercontent.com/59097731/104179943-a9885100-541d-11eb-8f69-7fb5a4bfdd37.PNG)
-
-4. And run command `lime setup android` in power shell / cmd
-You need to insert the program paths
-
-As in this picture (use jdk, not jre)
-![lime](https://user-images.githubusercontent.com/59097731/104179268-9e80f100-541c-11eb-948d-a00d85317b1a.PNG)
-
-5. You Need to install extension-androidtools, extension-videoview and to replace the linc_luajit
-
-To Install Them You Need To Open Command prompt/PowerShell And To Tipe
-```cmd
-haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
-
-haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
-
-haxelib remove linc_luajit
-
-haxelib git linc_luajit https://github.com/jigsaw-4277821/linc_luajit.git
-
-```
-
-6. Open project in command line `cd (path to fnf source)`
-And run command `lime build android -final`
-Apk will be generated in this path (path to source)\export\release\android\bin\app\build\outputs\apk\debug
-
-## Credits:
+## Psych Engine Credits:
 * Shadow Mario - Coding
 * RiverOaken - Arts and Animations
 * bbpanzu - Assistant Coding
 
-### Special Thanks
+### Psych Engine Special Thanks
 * shubs - New Input System
 * SqirraRNG - Chart Editor's Sound Waveform base code
 * iFlicky - Delay/Combo Menu Song Composer + Dialogue Sounds
@@ -62,75 +37,76 @@ Apk will be generated in this path (path to source)\export\release\android\bin\a
 * Smokey - Spritemap Texture Atlas support
 * Cary - OG Resolution code
 * Nebula_Zorua - VCR Shader code
-
-### Android Port
-* Saw (M.A. Jigsaw) - all the stuff for the android port
 _____________________________________
 
 # Features
 
-## Attractive animated dialogue boxes:
+## Psych Engine Features
 
-![](https://user-images.githubusercontent.com/44785097/127706669-71cd5cdb-5c2a-4ecc-871b-98a276ae8070.gif)
+OS Engine is a fork of Psych Engine, so you can use almost every feature from Psych Engine in OS Engine!
 
+## OS Engine Features
 
-## Mod Support
-* Probably one of the main points of this engine, you can code in .lua files outside of the source code, making your own weeks without even messing with the source!
-* Comes with a Mod Organizing/Disabling Menu. 
+### Psych Engine mods compability
+Yes, almost every mod for Psych Engine runs on OS Engine (But you need to convert icons to 450x150)
 
-## Atleast one change to every week:
-### Week 1:
-  * New Dad Left sing sprite 
-  * Unused stage lights are now used
-### Week 2:
-  * Both BF and Skid & Pump does "Hey!" animations
-  * Thunders does a quick light flash and zooms the camera in slightly
-  * Added a quick transition/cutscene to Monster
-### Week 3:
-  * BF does "Hey!" during Philly Nice
-  * Blammed has a cool new colors flash during that sick part of the song
-### Week 4:
-  * Better hair physics for Mom/Boyfriend (Maybe even slightly better than Week 7's :eyes:)
-  * Henchmen die during all songs. Yeah :(
-### Week 5:
-  * Bottom Boppers and GF does "Hey!" animations during Cocoa and Eggnog
-  * On Winter Horrorland, GF bops her head slower in some parts of the song.
-### Week 6:
-  * On Thorns, the HUD is hidden during the cutscene
-  * Also there's the Background girls being spooky during the "Hey!" parts of the Instrumental
+### Note Skins
+OS Engine adds a note skins system! There's only Default and Circle skins by default.
 
-## Cool new Chart Editor changes and countless bug fixes
-![](https://github.com/ShadowMario/FNF-PsychEngine/blob/main/docs/img/chart.png?raw=true)
-* You can now chart "Event" notes, which are bookmarks that trigger specific actions that usually were hardcoded on the vanilla version of the game.
-* Your song's BPM can now have decimal values
-* You can manually adjust a Note's strum time if you're really going for milisecond precision
-* You can change a note's type on the Editor, it comes with two example types:
-  * Alt Animation: Forces an alt animation to play, useful for songs like Ugh/Stress
-  * Hey: Forces a "Hey" animation instead of the base Sing animation, if Boyfriend hits this note, Girlfriend will do a "Hey!" too.
+![](https://media.discordapp.net/attachments/969211146412363828/969211181728399420/unknown.png)
 
-## Multiple editors to assist you in making your own Mod
-![Screenshot_3](https://user-images.githubusercontent.com/44785097/144629914-1fe55999-2f18-4cc1-bc70-afe616d74ae5.png)
-* Working both for Source code modding and Downloaded builds!
+### Showcase Mode
+This feature hides HUD and enables botplay. So you can showcase any mod without any problems.
 
-## Story mode menu rework:
-![](https://i.imgur.com/UB2EKpV.png)
-* Added a different BG to every song (less Tutorial)
-* All menu characters are now in individual spritesheets, makes modding it easier.
+![](https://media.discordapp.net/attachments/969211146412363828/969211657307951104/unknown.png)
 
-## Credits menu
-![Screenshot_1](https://user-images.githubusercontent.com/44785097/144632635-f263fb22-b879-4d6b-96d6-865e9562b907.png)
-* You can add a head icon, name, description and a Redirect link for when the player presses Enter while the item is currently selected.
+### Hide Score Text
+This feature hides score text under health bar. Idk why you need to use it.
 
-## Awards/Achievements
-* The engine comes with 16 example achievements that you can mess with and learn how it works (Check Achievements.hx and search for "checkForAchievement" on PlayState.hx)
+![](https://media.discordapp.net/attachments/969211146412363828/969211797993299979/unknown.png)
 
-## Options menu:
-* You can change Note colors, Delay and Combo Offset, Controls and Preferences there.
- * On Preferences you can toggle Downscroll, Middlescroll, Anti-Aliasing, Framerate, Low Quality, Note Splashes, Flashing Lights, etc.
+### Perfect!! Judgement
+Adds Perfect!! Judgement. It's better than sick. Btw you can disable it in settings if you want.
 
-## Other gameplay features:
-* When the enemy hits a note, their strum note also glows.
-* Lag doesn't impact the camera movement and player icon scaling anymore.
-* Some stuff based on Week 7's changes has been put in (Background colors on Freeplay, Note splashes)
-* You can reset your Score on Freeplay/Story Mode by pressing Reset button.
-* You can listen to a song or adjust Scroll Speed/Damage taken/etc. on Freeplay by pressing Space.
+![](https://media.discordapp.net/attachments/969211146412363828/969213039230455838/unknown.png)
+![](https://media.discordapp.net/attachments/969211146412363828/969212313410351134/unknown.png?width=1440&height=190)
+
+### Lane Underlay
+You can set lane underlay transparency under arrows by using that functions.
+
+![](https://media.discordapp.net/attachments/969211146412363828/969212761605296198/unknown.png?width=465&height=676)
+![](https://media.discordapp.net/attachments/969211146412363828/969212421887635546/unknown.png?width=1440&height=326)
+
+### Custom Settings in Chart Editor.
+Now you can enable character trails (Like in thorns or maybe mid fight masses). Or "Camera Follow Notes" like in 99% of mods atm (it's buggy).
+
+![](https://media.discordapp.net/attachments/969211146412363828/969213936924774430/unknown.png)
+
+### Literally Useless Exit Game State
+Now you can press ESC at title state. And game will ask you do you want to close game or no
+
+![](https://media.discordapp.net/attachments/969211146412363828/969214715702177812/unknown.png?width=1202&height=676)
+
+### Bit Changed Main Menu State
+
+![](https://media.discordapp.net/attachments/969211146412363828/969214974369099807/unknown.png)
+
+### Winning icons 
+Instead of 2 icons, there'll be three icons (losing, normal, winning). So you need icon file 450x150, or it won't work
+
+![](https://github.com/weuz-github/FNF-OSEngine/blob/main/assets/preload/images/icons/icon-bf.png?raw=true)
+
+*thanks Cooljer for remaking original fnf icons*
+
+### Shaders
+Returned shaders from old psych engine versions. Now you can make your bambi mods.
+
+### Custom Title State
+Bit changed Title State. Now it looks way more better.
+
+![](https://media.discordapp.net/attachments/969211146412363828/969215626126196797/unknown.png?width=1202&height=676)
+
+### Striped Health Bar
+Cassette Girl vibes?
+
+![](https://media.discordapp.net/attachments/969211146412363828/969218236950397038/unknown.png)

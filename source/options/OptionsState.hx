@@ -29,7 +29,7 @@ using StringTools;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay'];
+	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay', 'Chart Editor'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -37,32 +37,19 @@ class OptionsState extends MusicBeatState
 	function openSelectedSubstate(label:String) {
 		switch(label) {
 			case 'Note Colors':
-				#if android
-				removeVirtualPad();
-				#end
 				openSubState(new options.NotesSubState());
 			case 'Controls':
-				#if android
-				removeVirtualPad();
-				#end
 				openSubState(new options.ControlsSubState());
 			case 'Graphics':
-				#if android
-				removeVirtualPad();
-				#end
 				openSubState(new options.GraphicsSettingsSubState());
 			case 'Visuals and UI':
-				#if android
-				removeVirtualPad();
-				#end
 				openSubState(new options.VisualsUISubState());
 			case 'Gameplay':
-				#if android
-				removeVirtualPad();
-				#end
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
+			case 'Chart Editor':
+				openSubState(new options.ChartEditorSettingsSubState());
 		}
 	}
 
@@ -73,6 +60,9 @@ class OptionsState extends MusicBeatState
 		#if desktop
 		DiscordClient.changePresence("Options Menu", null);
 		#end
+
+		camera.zoom = 2.2;
+		CoolUtil.cameraZoom(camera, 1, .5, FlxEase.sineOut, ONESHOT);
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
@@ -98,20 +88,8 @@ class OptionsState extends MusicBeatState
 		selectorRight = new Alphabet(0, 0, '<', true, false);
 		add(selectorRight);
 
-		#if android
-		var tipText:FlxText = new FlxText(10, 12, 0, 'Press C to Go In Android Controls Menu', 16);
-		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		tipText.borderSize = 2;
-		tipText.scrollFactor.set();
-		add(tipText);
-		#end
-
 		changeSelection();
 		ClientPrefs.saveSettings();
-
-		#if android
-		addVirtualPad(UP_DOWN, A_B_C);
-		#end
 
 		super.create();
 	}
@@ -133,18 +111,18 @@ class OptionsState extends MusicBeatState
 
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			if (PauseSubState.wasinsongbeforethenwenttooptions) {
+				LoadingState.loadAndSwitchState(new PlayState());
+				PauseSubState.wasinsongbeforethenwenttooptions = false;
+			} else {
+				MusicBeatState.switchState(new MainMenuState());
+				CoolUtil.cameraZoom(camera, 2, .5, FlxEase.backOut, ONESHOT);
+			}
 		}
 
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
 		}
-
-		#if android
-		if (_virtualpad.buttonC.justPressed) {
-			MusicBeatState.switchState(new android.AndroidControlsMenu());
-		}
-		#end
 	}
 	
 	function changeSelection(change:Int = 0) {

@@ -44,6 +44,9 @@ class CreditsState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		camera.zoom = 2.2;
+		CoolUtil.cameraZoom(camera, 1, .5, FlxEase.sineOut, ONESHOT);
+
 		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);
@@ -52,8 +55,13 @@ class CreditsState extends MusicBeatState
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
+		var versionShit:FlxText = new FlxText(FlxG.width * 0.7, FlxG.height - 24, 0, "Press CTRL for Official Discord Server", 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+
 		#if MODS_ALLOWED
-		var path:String = SUtil.getPath() + 'modsList.txt';
+		var path:String = 'modsList.txt';
 		if(FileSystem.exists(path))
 		{
 			var leMods:Array<String> = CoolUtil.coolTextFile(path);
@@ -81,8 +89,10 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-			['Psych Engine Android'],
-			['Saw (M.A. Jigsaw)',	'saw',				'Main Programmer of Psych Engine Android',					'https://www.youtube.com/channel/UC2Sk7vtPzOvbVzdVTWrribQ', 	'F73838'],
+			['OS Engine Team'],
+			['weuz_', 'weuz', 'Main Programmer of OS Engine', 'https://twitter.com/notweuz_', '8633F2'],
+			['nelifs', 'nelifs', 'Second Programmer and Designer of OS Engine', 'https://github.com/nelifs', '1C1C1C'],
+			['Cooljer', 'cooljer', 'Main Artist of OS Engine', 'https://twitter.com/cooljer_', '3360F2'],
 			[''],
 			['Psych Engine Team'],
 			['Shadow Mario',		'shadowmario',		'Main Programmer of Psych Engine',							'https://twitter.com/Shadow_Mario_',	'444444'],
@@ -162,11 +172,6 @@ class CreditsState extends MusicBeatState
 		bg.color = getCurrentBGColor();
 		intendedColor = bg.color;
 		changeSelection();
-
-		#if android
-		addVirtualPad(UP_DOWN, A_B);
-		#end
-
 		super.create();
 	}
 
@@ -177,6 +182,10 @@ class CreditsState extends MusicBeatState
 		if (FlxG.sound.music.volume < 0.7)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
+		}
+		
+		if (FlxG.keys.pressed.CONTROL) {
+			CoolUtil.browserLoad('https://discord.gg/5vEHTRjNck');
 		}
 
 		if(!quitting)
@@ -223,6 +232,7 @@ class CreditsState extends MusicBeatState
 				}
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
+				CoolUtil.cameraZoom(camera, 2, .5, FlxEase.backOut, ONESHOT);
 				quitting = true;
 			}
 		}

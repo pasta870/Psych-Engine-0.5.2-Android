@@ -8,7 +8,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -32,6 +31,7 @@ class NotesSubState extends MusicBeatSubstate
 {
 	private static var curSelected:Int = 0;
 	private static var typeSelected:Int = 0;
+	public static var bg:FlxSprite;
 	private var grpNumbers:FlxTypedGroup<Alphabet>;
 	private var grpNotes:FlxTypedGroup<FlxSprite>;
 	private var shaderArray:Array<ColorSwap> = [];
@@ -46,7 +46,7 @@ class NotesSubState extends MusicBeatSubstate
 	public function new() {
 		super();
 		
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
@@ -60,6 +60,10 @@ class NotesSubState extends MusicBeatSubstate
 		add(grpNotes);
 		grpNumbers = new FlxTypedGroup<Alphabet>();
 		add(grpNumbers);
+
+		var resetText:FlxText = new FlxText(12, FlxG.height - 40, "Press CONTROL to reset selected arrow.", 80);
+		resetText.setFormat("VCR OSD Mono", 24, FlxColor.WHITE, CENTER);
+		add(resetText);
 
 		for (i in 0...ClientPrefs.arrowHSV.length) {
 			var yPos:Float = (165 * i) + 35;
@@ -90,11 +94,6 @@ class NotesSubState extends MusicBeatSubstate
 		add(hsbText);
 
 		changeSelection();
-
-		#if android
-		addVirtualPad(FULL, A_B_C);
-		addPadCamera();
-		#end
 	}
 
 	var changingNote:Bool = false;
@@ -107,7 +106,7 @@ class NotesSubState extends MusicBeatSubstate
 				} else if(controls.UI_RIGHT_P) {
 					updateValue(1);
 					FlxG.sound.play(Paths.sound('scrollMenu'));
-				} else if(controls.RESET #if android || _virtualpad.buttonC.justPressed #end) {
+				} else if(controls.RESET) {
 					resetValue(curSelected, typeSelected);
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 				}
@@ -148,10 +147,11 @@ class NotesSubState extends MusicBeatSubstate
 				changeType(1);
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
-			if(controls.RESET #if android || _virtualpad.buttonC.justPressed #end) {
+			if(controls.RESET || FlxG.keys.justPressed.CONTROL) {
 				for (i in 0...3) {
 					resetValue(curSelected, i);
 				}
+				FlxG.camera.flash(FlxColor.BLACK, 1);
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
 			if (controls.ACCEPT && nextAccept <= 0) {
@@ -179,19 +179,14 @@ class NotesSubState extends MusicBeatSubstate
 
 		if (controls.BACK || (changingNote && controls.ACCEPT)) {
 			if(!changingNote) {
-			        #if android
-                                FlxTransitionableState.skipNextTransOut = true;
-			        FlxG.resetState();
-                                #else
-                                close();
-                                #end
+				close();
 			} else {
 				changeSelection();
 			}
 			changingNote = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
-
+ 
 		if(nextAccept > 0) {
 			nextAccept -= 1;
 		}
@@ -224,6 +219,16 @@ class NotesSubState extends MusicBeatSubstate
 				item.scale.set(1, 1);
 				hsbText.y = item.y - 70;
 				blackBG.y = item.y - 20;
+				
+				if(curSelected == 0) { 
+					bg.color = 0xbf5eff;
+				} else if(curSelected == 1) {
+					bg.color = 0x5ee7ff;
+				} else if(curSelected == 2) {
+					bg.color = 0x5eff84;
+				} else if(curSelected == 3) {
+					bg.color = 0xff5e5e;
+				}
 			}
 		}
 		FlxG.sound.play(Paths.sound('scrollMenu'));
