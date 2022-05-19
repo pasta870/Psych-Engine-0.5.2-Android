@@ -244,6 +244,10 @@ class StageEditorState extends MusicBeatState
 
 		makePlaceholders();
 
+                #if android
+                addVirtualPad(FULL, FULL)
+                #end
+
 		super.create();
 	}
 
